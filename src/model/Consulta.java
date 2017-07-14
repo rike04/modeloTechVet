@@ -4,6 +4,7 @@ import bll.PersistenceManager;
 import bll.Util;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -168,6 +169,9 @@ public class Consulta implements Serializable {
 
     @XmlTransient
     public List<ArtigoConsulta> getArtigoConsultaCollection() {
+        if (artigoConsultaCollection == null) {
+            artigoConsultaCollection = new ArrayList<>();
+        }
         return artigoConsultaCollection;
     }
 
@@ -177,6 +181,9 @@ public class Consulta implements Serializable {
 
     @XmlTransient
     public List<Receita> getReceitaCollection() {
+        if (receitaCollection == null) {
+            receitaCollection = new ArrayList<>();
+        }
         return receitaCollection;
     }
 
@@ -186,6 +193,9 @@ public class Consulta implements Serializable {
 
     @XmlTransient
     public List<Internamento> getInternamentoCollection() {
+        if (internamentoCollection == null) {
+            internamentoCollection = new ArrayList<>();
+        }
         return internamentoCollection;
     }
 

@@ -7,6 +7,7 @@ package model;
 
 import bll.PersistenceManager;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -204,4 +205,11 @@ public class Utilizador implements Serializable {
         
         System.out.println(uti.getUsername());
     }
+     
+     public static List<Utilizador> retrieveAll() {
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Utilizador.findAll");
+        return query.getResultList();
+     }
+     
 }

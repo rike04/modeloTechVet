@@ -6,7 +6,6 @@
 package model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,8 +24,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author rike4
+ * @author Henrique Faria e Sergio Araujo
  */
 @Entity
 @Table(name = "VENDA")
@@ -50,13 +48,12 @@ public class Venda implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
+    @Column(name = "TOTAL")
+    private double total;
+    @Basic(optional = false)
     @Column(name = "DATA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @Column(name = "TOTAL")
-    private BigDecimal total;
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Cliente idCliente;
@@ -71,7 +68,7 @@ public class Venda implements Serializable {
         this.id = id;
     }
 
-    public Venda(Integer id, Date data, BigDecimal total) {
+    public Venda(Integer id, Date data, double total) {
         this.id = id;
         this.data = data;
         this.total = total;
@@ -93,13 +90,6 @@ public class Venda implements Serializable {
         this.data = data;
     }
 
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
 
     public Cliente getIdCliente() {
         return idCliente;
@@ -141,5 +131,14 @@ public class Venda implements Serializable {
     public String toString() {
         return "model.Venda[ id=" + id + " ]";
     }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+    
     
 }

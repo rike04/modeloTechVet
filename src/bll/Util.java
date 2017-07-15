@@ -34,7 +34,7 @@ public class Util {
 
             try {
                 conn = DriverManager.getConnection(
-                        "jdbc:oracle:thin:@localhost:1521:xe", "testeJunit", "palavrapasse");
+                        "jdbc:oracle:thin:@localhost:1521:xe", "TechVetBD", "passe");
             } catch (Exception e) {
                 System.out.println("ERRO " + e.getMessage());
                 System.exit(-2);

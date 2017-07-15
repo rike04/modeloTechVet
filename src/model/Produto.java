@@ -7,11 +7,13 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,13 +58,12 @@ public class Produto implements Serializable {
     @Basic(optional = false)
     @Column(name = "NOME")
     private String nome;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @Column(name = "PRECO")
-    private BigDecimal preco;
     @Basic(optional = false)
     @Column(name = "STOCK")
     private int stock;
+    @Basic(optional = false)
+    @Column(name = "PRECO")
+    private double preco;
     @Column(name = "DESCRICAO")
     private String descricao;
     @Basic(optional = false)
@@ -72,20 +73,23 @@ public class Produto implements Serializable {
     @ManyToOne(optional = false)
     private TipoProduto codTipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
-    private Collection<InteRetiraProd> inteRetiraProdCollection;
+    private List<InteRetiraProd> inteRetiraProdCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProduto")
-    private Collection<LinhaArtigo> linhaArtigoCollection;
+    private List<LinhaArtigo> linhaArtigoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProduto")
-    private Collection<ArtigoConsulta> artigoConsultaCollection;
+    private List<ArtigoConsulta> artigoConsultaCollection;
 
+    private static EntityManager em;
+    
     public Produto() {
+        
     }
 
     public Produto(Integer id) {
         this.id = id;
     }
 
-    public Produto(Integer id, String nome, BigDecimal preco, int stock, int stockmin) {
+    public Produto(Integer id, String nome, double preco, int stock, int stockmin) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -109,13 +113,6 @@ public class Produto implements Serializable {
         this.nome = nome;
     }
 
-    public BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
 
     public int getStock() {
         return stock;
@@ -150,29 +147,38 @@ public class Produto implements Serializable {
     }
 
     @XmlTransient
-    public Collection<InteRetiraProd> getInteRetiraProdCollection() {
+    public List<InteRetiraProd> getInteRetiraProdList() {
+        if (inteRetiraProdCollection == null) {
+            inteRetiraProdCollection = new ArrayList<>();
+        }
         return inteRetiraProdCollection;
     }
 
-    public void setInteRetiraProdCollection(Collection<InteRetiraProd> inteRetiraProdCollection) {
+    public void setInteRetiraProdList(List<InteRetiraProd> inteRetiraProdCollection) {
         this.inteRetiraProdCollection = inteRetiraProdCollection;
     }
 
     @XmlTransient
-    public Collection<LinhaArtigo> getLinhaArtigoCollection() {
+    public List<LinhaArtigo> getLinhaArtigoList() {
+        if (linhaArtigoCollection == null) {
+            linhaArtigoCollection = new ArrayList<>();
+        }
         return linhaArtigoCollection;
     }
 
-    public void setLinhaArtigoCollection(Collection<LinhaArtigo> linhaArtigoCollection) {
+    public void setLinhaArtigoList(List<LinhaArtigo> linhaArtigoCollection) {
         this.linhaArtigoCollection = linhaArtigoCollection;
     }
 
     @XmlTransient
-    public Collection<ArtigoConsulta> getArtigoConsultaCollection() {
+    public List<ArtigoConsulta> getArtigoConsultaList() {
+        if (artigoConsultaCollection == null) {
+            artigoConsultaCollection = new ArrayList<>();
+        }
         return artigoConsultaCollection;
     }
 
-    public void setArtigoConsultaCollection(Collection<ArtigoConsulta> artigoConsultaCollection) {
+    public void setArtigoConsultaCollection(List<ArtigoConsulta> artigoConsultaCollection) {
         this.artigoConsultaCollection = artigoConsultaCollection;
     }
 
@@ -199,6 +205,14 @@ public class Produto implements Serializable {
     @Override
     public String toString() {
         return "model.Produto[ id=" + id + " ]";
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
     }
     
 }

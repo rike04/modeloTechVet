@@ -81,6 +81,11 @@ public class Paciente implements Serializable {
     @Column(name = "COR")
     private String cor;
     @Basic(optional = false)
+    @Column(name = "IDADE")
+    private int idade;
+    @Column(name = "PESO")
+    private Double peso;
+    @Basic(optional = false)
     @Column(name = "DATANASC")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datanasc;
@@ -97,7 +102,7 @@ public class Paciente implements Serializable {
     private List<Consulta> consultaCollection;
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Cliente idCliente;
+    private Cliente cliente;
     
     private static EntityManager em;
 
@@ -208,6 +213,22 @@ public class Paciente implements Serializable {
     public void setEstado(short estado) {
         this.estado = estado;
     }
+    
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
 
     @XmlTransient
     public List<Internamento> getInternamentoCollection() {
@@ -228,11 +249,11 @@ public class Paciente implements Serializable {
     }
 
     public Cliente getIdCliente() {
-        return idCliente;
+        return cliente;
     }
 
     public void setIdCliente(Cliente idCliente) {
-        this.idCliente = idCliente;
+        this.cliente = idCliente;
     }
 
     @Override

@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
  */
 package model;
 
@@ -75,7 +73,7 @@ public class Cliente implements Serializable {
     private String nif;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
     private List<Venda> vendaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Paciente> pacienteCollection;
     
     private static EntityManager em;
@@ -268,7 +266,6 @@ public class Cliente implements Serializable {
         return query.getResultList();
     }
     
-    
     public static void remove(int idEliminar) {
         PersistenceManager.getEntityManager().getTransaction().begin();
         Query query = em.createNamedQuery("Cliente.removeById");
@@ -276,6 +273,5 @@ public class Cliente implements Serializable {
         query.executeUpdate();
         PersistenceManager.getEntityManager().getTransaction().commit();
     }
-    
     
 }

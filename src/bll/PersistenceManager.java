@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
  */
 public class PersistenceManager {
     
-    private static final String PERSISTENCE_UNIT_NAME = "ProjetoJUnitPU";
+    private static final String PERSISTENCE_UNIT_NAME = "TechVetBD";
     private static EntityManagerFactory factory;
     private static EntityManager em = null;
 

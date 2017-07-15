@@ -4,11 +4,14 @@
 
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -54,15 +58,20 @@ public class ArtigoConsulta implements Serializable {
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Produto idProduto;
+    
+    private static EntityManager em;
 
     public ArtigoConsulta() {
+        em = PersistenceManager.getEntityManager();
     }
 
     public ArtigoConsulta(Integer id) {
+        em = PersistenceManager.getEntityManager();
         this.id = id;
     }
 
     public ArtigoConsulta(Integer id, int quantidade) {
+        em = PersistenceManager.getEntityManager();
         this.id = id;
         this.quantidade = quantidade;
     }
@@ -124,5 +133,55 @@ public class ArtigoConsulta implements Serializable {
     public String toString() {
         return "model.ArtigoConsulta[ id=" + id + " ]";
     }
+    
+    public int createT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.persist((ArtigoConsulta)this);
+        em.getTransaction().commit();
+        
+        return this.getId();
+    }
+   
+    public int create(){
+        em = PersistenceManager.getEntityManager();
+        em.persist((ArtigoConsulta)this);
+        return this.getId();
+    }
+
+    public void updateT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.merge((ArtigoConsulta)this);
+        em.getTransaction().commit();
+    }
+    
+    public void read(int idArtigoConsulta){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("ArtigoConsulta.findById");
+        query.setParameter("id", idArtigoConsulta);
+        
+        ArtigoConsulta art = (ArtigoConsulta) query.getSingleResult();
+        this.setId(art.getId());
+        this.setIdProduto(art.getIdProduto());
+        this.setConsultaCollection(art.getConsultaCollection());
+        this.setQuantidade(art.getQuantidade());
+        
+        System.out.println("ID = " + this.getId());
+    }
+
+    public static List<ArtigoConsulta> retrieveAll(){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("ArtigoConsulta.findAll");
+        return query.getResultList();
+    }
+    
+//    public static void remove(int idEliminar) {
+//        PersistenceManager.getEntityManager().getTransaction().begin();
+//        Query query = em.createNamedQuery("Cliente.removeById");
+//        query.setParameter("id", idEliminar);
+//        query.executeUpdate();
+//        PersistenceManager.getEntityManager().getTransaction().commit();
+//    }
     
 }

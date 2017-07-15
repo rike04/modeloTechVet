@@ -5,13 +5,16 @@
  */
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -75,15 +79,21 @@ public class Internamento implements Serializable {
     @JoinColumn(name = "ID_PACIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Paciente idPaciente;
+    
+    private static EntityManager em;
 
     public Internamento() {
+        em = PersistenceManager.getEntityManager();
+        
     }
 
     public Internamento(Integer id) {
+        em = PersistenceManager.getEntityManager();        
         this.id = id;
     }
 
     public Internamento(Integer id, Date datae, Date datas, String obs) {
+        em = PersistenceManager.getEntityManager();        
         this.id = id;
         this.datae = datae;
         this.datas = datas;
@@ -178,6 +188,28 @@ public class Internamento implements Serializable {
     @Override
     public String toString() {
         return "model.Internamento[ id=" + id + " ]";
+    }
+    
+    public void read(int id){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Internamento.findById");
+        query.setParameter("id", id);
+        
+        Internamento i = (Internamento) query.getSingleResult();
+        this.setId(i.getId());
+        this.setIdConsulta(i.getIdConsulta());
+        this.setIdPaciente(i.getIdPaciente());
+        this.setGuiamed(i.getGuiamed());
+        this.setDatae(i.getDatae());
+        this.setDatas(i.getDatas());
+        this.setObs(i.getObs());
+        this.setInteRetiraProdCollection(i.getInteRetiraProdCollection());
+    }
+
+    public static List<InteRetiraProd> retrieveAll(){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Internamento.findAll");
+        return query.getResultList();
     }
     
 }

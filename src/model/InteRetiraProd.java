@@ -5,15 +5,19 @@
  */
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -44,19 +48,25 @@ public class InteRetiraProd implements Serializable {
     @ManyToOne(optional = false)
     private Produto produto;
 
+    private static EntityManager em;
+    
     public InteRetiraProd() {
+        em = PersistenceManager.getEntityManager();
     }
 
     public InteRetiraProd(InteRetiraProdPK inteRetiraProdPK) {
+        em = PersistenceManager.getEntityManager();
         this.inteRetiraProdPK = inteRetiraProdPK;
     }
 
     public InteRetiraProd(InteRetiraProdPK inteRetiraProdPK, int quantidade) {
+        em = PersistenceManager.getEntityManager();
         this.inteRetiraProdPK = inteRetiraProdPK;
         this.quantidade = quantidade;
     }
 
     public InteRetiraProd(int idProduto, int idInternamento) {
+        em = PersistenceManager.getEntityManager();
         this.inteRetiraProdPK = new InteRetiraProdPK(idProduto, idInternamento);
     }
 
@@ -115,6 +125,24 @@ public class InteRetiraProd implements Serializable {
     @Override
     public String toString() {
         return "model.InteRetiraProd[ inteRetiraProdPK=" + inteRetiraProdPK + " ]";
+    }
+    
+    public void read(Internamento internamento){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("InteRetiraProd.findByIdInternamento");
+        query.setParameter("idInternamento", internamento);
+        
+        InteRetiraProd i = (InteRetiraProd) query.getSingleResult();
+        this.setProduto(i.getProduto());
+        this.setQuantidade(i.getQuantidade());
+        this.setInternamento(i.getInternamento());
+        this.setInteRetiraProdPK(i.getInteRetiraProdPK());
+    }
+
+    public static List<InteRetiraProd> retrieveAll(){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("InteRetiraProd.findAll");
+        return query.getResultList();
     }
     
 }

@@ -61,6 +61,9 @@ public class Consulta implements Serializable {
     @Column(name = "LOCAL")
     private String local;
     @Basic(optional = false)
+    @Column(name = "VALOR")
+    private double valor;
+    @Basic(optional = false)
     @Column(name = "ESTADO")
     private short estado;
     @Basic(optional = false)
@@ -71,10 +74,6 @@ public class Consulta implements Serializable {
     @Column(name = "DATAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datahora; 
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @Column(name = "VALOR")
-    private BigDecimal valor;
     @JoinTable(name = "CON_ESCOLHE_ARTG_CON", joinColumns = {
         @JoinColumn(name = "ID_CONSULTA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ART_CON", referencedColumnName = "ID")})
@@ -102,7 +101,7 @@ public class Consulta implements Serializable {
         this.id = id;
     }
 
-    public Consulta(Integer id, String local, short estado, short pago, BigDecimal valor) {
+    public Consulta(Integer id, String local, short estado, short pago, double valor) {
         em = PersistenceManager.getEntityManager();
         this.id = id;
         this.local = local;
@@ -150,6 +149,14 @@ public class Consulta implements Serializable {
     public void setDesctratamento(String desctratamento) {
         this.desctratamento = desctratamento;
     }
+    
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
 
     public Date getDatahora() {
         return datahora;
@@ -159,13 +166,6 @@ public class Consulta implements Serializable {
         this.datahora = datahora;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 
     @XmlTransient
     public List<ArtigoConsulta> getArtigoConsultaCollection() {

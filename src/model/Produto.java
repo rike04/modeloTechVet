@@ -5,8 +5,8 @@
  */
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -74,7 +75,7 @@ public class Produto implements Serializable {
     private TipoProduto codTipo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
     private List<InteRetiraProd> inteRetiraProdCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProduto")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
     private List<LinhaArtigo> linhaArtigoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProduto")
     private List<ArtigoConsulta> artigoConsultaCollection;
@@ -214,5 +215,70 @@ public class Produto implements Serializable {
     public void setPreco(double preco) {
         this.preco = preco;
     }
+    
+    public int createT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.persist((Produto)this);
+        em.getTransaction().commit();
+        
+        return this.getId();
+    }
+    
+    public int create(){
+        em = PersistenceManager.getEntityManager();
+        em.persist((Produto)this);
+        return this.getId();
+    }
+
+    public void updateT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.merge((Produto)this);
+        em.getTransaction().commit();
+    }
+
+    public void read(int idcliente){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Cliente.findById");
+        query.setParameter("id", idcliente);
+        
+        Produto p = (Produto) query.getSingleResult();
+        this.setId(p.getId());
+        this.setNome(p.getNome());
+        this.setPreco(p.getPreco());
+        this.setDescricao(p.getDescricao());
+        this.setCodTipo(p.getCodTipo());
+        this.setArtigoConsultaCollection(p.getArtigoConsultaList());
+        this.setStock(p.getStock());
+        this.setStockmin(p.getStockmin());
+        this.setInteRetiraProdList(p.getInteRetiraProdList());
+        this.setLinhaArtigoList(p.getLinhaArtigoList());
+        
+        System.out.println("ID = " + this.getId());
+    }
+
+    public static List<Produto> readByNome(String nome){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Produto.findByNome");
+        query.setParameter("nome", nome);
+        List<Produto> lista = query.getResultList();
+        return lista;
+    }
+
+    public static List<Produto> retrieveAll(){
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Produto.findAll");
+        return query.getResultList();
+    }
+    
+    
+//    public static void remove(int idEliminar) {
+//        PersistenceManager.getEntityManager().getTransaction().begin();
+//        Query query = em.createNamedQuery("Cliente.removeById");
+//        query.setParameter("id", idEliminar);
+//        query.executeUpdate();
+//        PersistenceManager.getEntityManager().getTransaction().commit();
+//    }
     
 }

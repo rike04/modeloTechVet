@@ -5,12 +5,15 @@
  */
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -52,11 +56,13 @@ public class LinhaArtigo implements Serializable {
     @Column(name = "QUANTIDADE")
     private int quantidade;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLinhaArt")
-    private Collection<Venda> vendaCollection;
+    private List<Venda> listaVendas;
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Produto idProduto;
+    private Produto produto;
 
+    private static EntityManager em;
+    
     public LinhaArtigo() {
     }
 
@@ -86,20 +92,20 @@ public class LinhaArtigo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Venda> getVendaCollection() {
-        return vendaCollection;
+    public List<Venda> getListaVendas() {
+        return listaVendas;
     }
 
-    public void setVendaCollection(Collection<Venda> vendaCollection) {
-        this.vendaCollection = vendaCollection;
+    public void setListaVendas(List<Venda> listaVendas) {
+        this.listaVendas = listaVendas;
     }
 
-    public Produto getIdProduto() {
-        return idProduto;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setIdProduto(Produto idProduto) {
-        this.idProduto = idProduto;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     @Override
@@ -126,5 +132,34 @@ public class LinhaArtigo implements Serializable {
     public String toString() {
         return "model.LinhaArtigo[ id=" + id + " ]";
     }
+    
+        public int createT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.persist((LinhaArtigo)this);
+        em.getTransaction().commit();
+        
+        return this.getId();
+    }
+    
+    public int create(){
+        em = PersistenceManager.getEntityManager();
+        em.persist((LinhaArtigo)this);
+        return this.getId();
+    }
+
+    public void updateT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.merge((LinhaArtigo)this);
+        em.getTransaction().commit();
+    }
+    
+    public static List<LinhaArtigo> retrieveAll() {
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("LinhaArtigo.findAll");
+        return query.getResultList();
+    }
+
     
 }

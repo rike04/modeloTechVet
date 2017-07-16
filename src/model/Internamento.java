@@ -206,7 +206,7 @@ public class Internamento implements Serializable {
         this.setInteRetiraProdCollection(i.getInteRetiraProdCollection());
     }
 
-    public static List<InteRetiraProd> retrieveAll(){
+    public static List<Internamento> retrieveAll(){
         em = PersistenceManager.getEntityManager();
         Query query = em.createNamedQuery("Internamento.findAll");
         return query.getResultList();

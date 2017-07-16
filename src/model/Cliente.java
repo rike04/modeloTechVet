@@ -79,7 +79,6 @@ public class Cliente implements Serializable {
     private static EntityManager em;
 
     public Cliente() {
-        em = PersistenceManager.getEntityManager();
         pacienteCollection = new ArrayList<Paciente>();
         vendaCollection = new ArrayList<Venda>();
     }
@@ -256,14 +255,18 @@ public class Cliente implements Serializable {
         return lista;
     }
 
-    /**
-     * Lê todos os clientes da BD
-     * @return Lista com os clientes lidos da BD
-     */
     public static List<Cliente> retrieveAll(){
         em = PersistenceManager.getEntityManager();
         Query query = em.createNamedQuery("Cliente.findAll");
         return query.getResultList();
+    }
+    
+    public static List<Cliente> retrieveByNIF(String nif) {
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Cliente.findByNif");
+        query.setParameter("nif", nif);
+        List<Cliente> lista = query.getResultList();
+        return lista;
     }
     
     public static void remove(int idEliminar) {

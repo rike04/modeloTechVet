@@ -79,7 +79,7 @@ public class Consulta implements Serializable {
         @JoinColumn(name = "ID_ART_CON", referencedColumnName = "ID")})
     @ManyToMany
     private List<ArtigoConsulta> artigoConsultaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConsulta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consulta")
     private List<Receita> receitaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConsulta")
     private List<Internamento> internamentoCollection;

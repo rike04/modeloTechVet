@@ -5,18 +5,22 @@
  */
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -54,7 +58,9 @@ public class TipoProduto implements Serializable {
     @Column(name = "DESCRICAO")
     private String descricao;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codTipo")
-    private Collection<Produto> produtoCollection;
+    private List<Produto> listaProdutos;
+    
+    private static EntityManager em;
 
     public TipoProduto() {
     }
@@ -94,12 +100,12 @@ public class TipoProduto implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Produto> getProdutoCollection() {
-        return produtoCollection;
+    public List<Produto> getProdutoList() {
+        return listaProdutos;
     }
 
-    public void setProdutoCollection(Collection<Produto> produtoCollection) {
-        this.produtoCollection = produtoCollection;
+    public void setProdutoList(List<Produto> produtoCollection) {
+        this.listaProdutos = produtoCollection;
     }
 
     @Override
@@ -126,5 +132,34 @@ public class TipoProduto implements Serializable {
     public String toString() {
         return "model.TipoProduto[ id=" + id + " ]";
     }
+    
+        public int createT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.persist((TipoProduto)this);
+        em.getTransaction().commit();
+        
+        return this.getId();
+    }
+    
+    public int create(){
+        em = PersistenceManager.getEntityManager();
+        em.persist((TipoProduto)this);
+        return this.getId();
+    }
+
+    public void updateT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.merge((TipoProduto)this);
+        em.getTransaction().commit();
+    }
+    
+    public static List<TipoProduto> retrieveAll() {
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("TipoProduto.findAll");
+        return query.getResultList();
+    }
+
     
 }

@@ -5,10 +5,13 @@
  */
 package model;
 
+import bll.PersistenceManager;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -52,7 +56,9 @@ public class Receita implements Serializable {
     private String descricao;
     @JoinColumn(name = "ID_CONSULTA", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Consulta idConsulta;
+    private Consulta consulta;
+    
+    private static EntityManager em;
 
     public Receita() {
     }
@@ -90,12 +96,12 @@ public class Receita implements Serializable {
         this.descricao = descricao;
     }
 
-    public Consulta getIdConsulta() {
-        return idConsulta;
+    public Consulta getConsulta() {
+        return consulta;
     }
 
-    public void setIdConsulta(Consulta idConsulta) {
-        this.idConsulta = idConsulta;
+    public void setConsulta(Consulta idConsulta) {
+        this.consulta = idConsulta;
     }
 
     @Override
@@ -123,4 +129,32 @@ public class Receita implements Serializable {
         return "model.Receita[ id=" + id + " ]";
     }
     
+        public int createT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.persist((Receita)this);
+        em.getTransaction().commit();
+        
+        return this.getId();
+    }
+    
+    public int create(){
+        em = PersistenceManager.getEntityManager();
+        em.persist((Receita)this);
+        return this.getId();
+    }
+
+    public void updateT(){
+        em = PersistenceManager.getEntityManager();
+        em.getTransaction().begin();
+        em.merge((Receita)this);
+        em.getTransaction().commit();
+    }
+    
+    public static List<Receita> retrieveAll() {
+        em = PersistenceManager.getEntityManager();
+        Query query = em.createNamedQuery("Receita.findAll");
+        return query.getResultList();
+    }
+
 }

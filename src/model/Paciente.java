@@ -1,14 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *
  */
+
 package model;
 
 import bll.PersistenceManager;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -26,8 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -46,7 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paciente.findByRaca", query = "SELECT p FROM Paciente p WHERE p.raca = :raca"),
     @NamedQuery(name = "Paciente.findBySexo", query = "SELECT p FROM Paciente p WHERE p.sexo = :sexo"),
     @NamedQuery(name = "Paciente.findByCor", query = "SELECT p FROM Paciente p WHERE p.cor = :cor"),
-    @NamedQuery(name = "Paciente.findByDatanasc", query = "SELECT p FROM Paciente p WHERE p.datanasc = :datanasc"),
     @NamedQuery(name = "Paciente.findByFoto", query = "SELECT p FROM Paciente p WHERE p.foto = :foto"),
     @NamedQuery(name = "Paciente.findByHistorico", query = "SELECT p FROM Paciente p WHERE p.historico = :historico"),
     @NamedQuery(name = "Paciente.findByEstado", query = "SELECT p FROM Paciente p WHERE p.estado = :estado"),
@@ -86,9 +81,6 @@ public class Paciente implements Serializable {
     @Column(name = "PESO")
     private Double peso;
     @Basic(optional = false)
-    @Column(name = "DATANASC")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date datanasc;
     @Column(name = "FOTO")
     private String foto;
     @Column(name = "HISTORICO")
@@ -121,14 +113,13 @@ public class Paciente implements Serializable {
         consultaCollection = new ArrayList<>();
     }
 
-    public Paciente(Integer id, String nome, String especie, String raca, String sexo, Date datanasc, short estado) {
+    public Paciente(Integer id, String nome, String especie, String raca, String sexo, short estado) {
         em = PersistenceManager.getEntityManager();
         this.id = id;
         this.nome = nome;
         this.especie = especie;
         this.raca = raca;
         this.sexo = sexo;
-        this.datanasc = datanasc;
         this.estado = estado;
         internamentoCollection = new ArrayList<>();
         consultaCollection = new ArrayList<>();
@@ -181,15 +172,7 @@ public class Paciente implements Serializable {
     public void setCor(String cor) {
         this.cor = cor;
     }
-
-    public Date getDatanasc() {
-        return datanasc;
-    }
-
-    public void setDatanasc(Date datanasc) {
-        this.datanasc = datanasc;
-    }
-
+    
     public String getFoto() {
         return foto;
     }
@@ -326,7 +309,8 @@ public class Paciente implements Serializable {
         this.setNome(p.getNome());
         this.setEspecie(p.getEspecie());
         this.setCor(p.getCor());
-        this.setDatanasc(p.getDatanasc());
+        this.setIdade(p.getIdade());
+        this.setPeso(p.getPeso());
         this.setEstado(p.getEstado());
         this.setIdCliente(p.getIdCliente());
         this.setFoto(p.getFoto());

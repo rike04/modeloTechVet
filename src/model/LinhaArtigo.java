@@ -161,5 +161,4 @@ public class LinhaArtigo implements Serializable {
         return query.getResultList();
     }
 
-    
 }

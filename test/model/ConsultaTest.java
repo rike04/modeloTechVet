@@ -259,7 +259,7 @@ public class ConsultaTest {
         consult.setIdPaciente(p);
         consult.setLocal("Fora");
         consult.setPago((short) 0);
-        consult.setValor(BigDecimal.valueOf(30.0));
+        consult.setValor(30.0);
         consult.setEstado((short) 1);
         consult.createT();
         

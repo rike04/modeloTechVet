@@ -59,24 +59,21 @@ public class TipoConsulta implements Serializable {
     @Column(name = "VALOR")
     private double valor;
     @OneToMany(mappedBy = "idTipo")
-    private List<Consulta> consultaCollection;
+    private List<Consulta> listaConsultas;
     
     private static EntityManager em;
 
     public TipoConsulta() {
         em = PersistenceManager.getEntityManager();
-        consultaCollection = new ArrayList<>();
     }
 
     public TipoConsulta(Integer id) {
         em = PersistenceManager.getEntityManager();
-        consultaCollection = new ArrayList<>();
         this.id = id;
     }
 
     public TipoConsulta(String nome, Double valor) {
         em = PersistenceManager.getEntityManager();
-        consultaCollection = new ArrayList<>();
         this.nome = nome;
         this.valor = valor;
     }
@@ -98,12 +95,15 @@ public class TipoConsulta implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Consulta> getConsultaCollection() {
-        return consultaCollection;
+    public List<Consulta> getConsultaCollection() {
+        if (listaConsultas == null) {
+            listaConsultas = new ArrayList<>();
+        }
+        return listaConsultas;
     }
 
-    public void setConsultaCollection(List<Consulta> consultaCollection) {
-        this.consultaCollection = consultaCollection;
+    public void setListaConsultas(List<Consulta> listaConsultas) {
+        this.listaConsultas = listaConsultas;
     }
     
     public double getValor() {

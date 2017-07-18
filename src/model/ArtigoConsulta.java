@@ -12,11 +12,11 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -53,8 +53,8 @@ public class ArtigoConsulta implements Serializable {
     @Basic(optional = false)
     @Column(name = "QUANTIDADE")
     private int quantidade;
-    @ManyToMany(mappedBy = "artigoConsultaCollection")
-    private Collection<Consulta> consultaCollection;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Consulta consulta;
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Produto idProduto;
@@ -93,12 +93,12 @@ public class ArtigoConsulta implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Consulta> getConsultaCollection() {
-        return consultaCollection;
+    public Consulta getConsulta() {
+        return consulta;
     }
 
-    public void setConsultaCollection(Collection<Consulta> consultaCollection) {
-        this.consultaCollection = consultaCollection;
+    public void setConsulta(Consulta consulta) {
+        this.consulta = consulta;
     }
 
     public Produto getIdProduto() {
@@ -164,7 +164,7 @@ public class ArtigoConsulta implements Serializable {
         ArtigoConsulta art = (ArtigoConsulta) query.getSingleResult();
         this.setId(art.getId());
         this.setIdProduto(art.getIdProduto());
-        this.setConsultaCollection(art.getConsultaCollection());
+        this.setConsulta(art.getConsulta());
         this.setQuantidade(art.getQuantidade());
         
         System.out.println("ID = " + this.getId());

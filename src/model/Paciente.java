@@ -13,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author rike4
  */
 @Entity
@@ -88,10 +88,10 @@ public class Paciente implements Serializable {
     @Basic(optional = false)
     @Column(name = "ESTADO")
     private short estado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPaciente")
-    private List<Internamento> internamentoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPaciente")
-    private List<Consulta> consultaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPaciente",  fetch = FetchType.LAZY)
+    private List<Internamento> listaInternamentos;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paciente",  fetch = FetchType.LAZY)
+    private List<Consulta> listaConsultas;
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Cliente cliente;
@@ -100,8 +100,8 @@ public class Paciente implements Serializable {
 
     public Paciente() {
         em = PersistenceManager.getEntityManager();
-        internamentoCollection = new ArrayList<>();
-        consultaCollection = new ArrayList<>();
+        listaInternamentos = new ArrayList<>();
+        listaConsultas = new ArrayList<>();
         historico = new String();
         foto = new String();
     }
@@ -109,8 +109,8 @@ public class Paciente implements Serializable {
     public Paciente(Integer id) {
         em = PersistenceManager.getEntityManager();
         this.id = id;
-        internamentoCollection = new ArrayList<>();
-        consultaCollection = new ArrayList<>();
+        listaInternamentos = new ArrayList<>();
+        listaConsultas = new ArrayList<>();
     }
 
     public Paciente(Integer id, String nome, String especie, String raca, String sexo, short estado) {
@@ -121,8 +121,8 @@ public class Paciente implements Serializable {
         this.raca = raca;
         this.sexo = sexo;
         this.estado = estado;
-        internamentoCollection = new ArrayList<>();
-        consultaCollection = new ArrayList<>();
+        listaInternamentos = new ArrayList<>();
+        listaConsultas = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -214,21 +214,21 @@ public class Paciente implements Serializable {
     }
 
     @XmlTransient
-    public List<Internamento> getInternamentoCollection() {
-        return internamentoCollection;
+    public List<Internamento> getListaInternamentos() {
+        return listaInternamentos;
     }
 
-    public void setInternamentoCollection(List<Internamento> internamentoCollection) {
-        this.internamentoCollection = internamentoCollection;
+    public void setListaInternamentos(List<Internamento> listaInternamentos) {
+        this.listaInternamentos = listaInternamentos;
     }
 
     @XmlTransient
-    public List<Consulta> getConsultaCollection() {
-        return consultaCollection;
+    public List<Consulta> getListaConsultas() {
+        return listaConsultas;
     }
 
-    public void setConsultaCollection(List<Consulta> consultaCollection) {
-        this.consultaCollection = consultaCollection;
+    public void setConsultaList(List<Consulta> consultaCollection) {
+        this.listaConsultas = consultaCollection;
     }
 
     public Cliente getIdCliente() {
@@ -288,7 +288,7 @@ public class Paciente implements Serializable {
     }
     
     public void addConsulta(Consulta c) {
-        this.getConsultaCollection().add(c);
+        this.getListaConsultas().add(c);
     }
     
     public void remove(int idEliminar) {
@@ -317,8 +317,8 @@ public class Paciente implements Serializable {
         this.setHistorico(p.getHistorico());
         this.setSexo(p.getSexo());
         this.setRaca(p.getRaca());
-        this.setInternamentoCollection(p.getInternamentoCollection());
-        this.setConsultaCollection(p.getConsultaCollection());
+        this.setListaInternamentos(p.getListaInternamentos());
+        this.setConsultaList(p.getListaConsultas());
         
         System.out.println("ID = " + this.getId());
     }

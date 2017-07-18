@@ -85,17 +85,17 @@ public class ConsultaTest {
         p.setSexo("Macho");
         p.setRaca("Raça");
         p.createT();        
-        cliente.getPacienteCollection().add(p);
+        cliente.getListaPacientes().add(p);
         
         consulta = new Consulta();
         consulta.setDesctratamento("Nada de tratamentos");
         consulta.setDatahora(new Date());
-        consulta.setIdPaciente(p);
+        consulta.setPaciente(p);
         consulta.setLocal("Casa");
         consulta.setPago((short) 1);
         consulta.setValor(BigDecimal.valueOf(20.0));
         consulta.setEstado((short) 1);
-        consulta.setIdTipo(tipo);
+        consulta.setTipoConsulta(tipo);
         consulta.createT();
         
         tipo.getConsultaCollection().add(consulta);
@@ -144,7 +144,7 @@ public class ConsultaTest {
         Consulta consult = new Consulta();
         consult.setDesctratamento("Nada de tratamentos");
         consult.setDatahora(new Date());
-        consult.setIdPaciente(p);
+        consult.setPaciente(p);
         consult.setLocal("Fora");
         consult.setPago((short) 0);
         consult.setValor(BigDecimal.valueOf(30.0));
@@ -183,12 +183,12 @@ public class ConsultaTest {
         Consulta cn = new Consulta();
         cn.setDesctratamento("Doença no estômago");
         cn.setDatahora(data);
-        cn.setIdPaciente(p);
+        cn.setPaciente(p);
         cn.setLocal("Casa");
         cn.setPago((short) 0);
         cn.setValor(BigDecimal.valueOf(12));
         cn.setEstado((short) 0);
-        cn.setIdTipo(tipo);
+        cn.setTipoConsulta(tipo);
         cn.createT();
         
         LocalDate ldt = LocalDate.parse("2014-03-01");
@@ -196,12 +196,12 @@ public class ConsultaTest {
         Consulta cnX = new Consulta();
         cnX.setDesctratamento("Doença na pata");
         cnX.setDatahora(d);
-        cnX.setIdPaciente(p);
+        cnX.setPaciente(p);
         cnX.setLocal("Fora");
         cnX.setPago((short) 1);
         cnX.setValor(BigDecimal.valueOf(19));
         cnX.setEstado((short) 0);
-        cnX.setIdTipo(tipo);
+        cnX.setTipoConsulta(tipo);
         cnX.createT();
         
         assertFalse(cnX.getDatahora().equals(cn.getDatahora()));
@@ -229,12 +229,12 @@ public class ConsultaTest {
         Consulta cn = new Consulta();
         cn.setDesctratamento("Doença no estômago");
         cn.setDatahora(new Date());
-        cn.setIdPaciente(p);
+        cn.setPaciente(p);
         cn.setLocal("Casa");
         cn.setPago((short) 0);
         cn.setValor(BigDecimal.valueOf(12));
         cn.setEstado((short) 0);
-        cn.setIdTipo(tipo);
+        cn.setTipoConsulta(tipo);
         cn.createT();
         
         List<Consulta> consultas = Consulta.retrieveAll();
@@ -256,7 +256,7 @@ public class ConsultaTest {
         Consulta consult = new Consulta();
         consult.setDesctratamento("Nada de tratamentos");
         consult.setDatahora(new Date());
-        consult.setIdPaciente(p);
+        consult.setPaciente(p);
         consult.setLocal("Fora");
         consult.setPago((short) 0);
         consult.setValor(30.0);

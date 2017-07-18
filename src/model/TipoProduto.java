@@ -7,13 +7,13 @@ package model;
 
 import bll.PersistenceManager;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,7 +57,7 @@ public class TipoProduto implements Serializable {
     @Basic(optional = false)
     @Column(name = "DESCRICAO")
     private String descricao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codTipo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codTipo", fetch = FetchType.LAZY)
     private List<Produto> listaProdutos;
     
     private static EntityManager em;

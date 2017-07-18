@@ -3,7 +3,6 @@ package model;
 import bll.PersistenceManager;
 import bll.Util;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -11,12 +10,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -77,18 +76,18 @@ public class Consulta implements Serializable {
     @JoinTable(name = "CON_ESCOLHE_ARTG_CON", joinColumns = {
         @JoinColumn(name = "ID_CONSULTA", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_ART_CON", referencedColumnName = "ID")})
-    @ManyToMany
-    private List<ArtigoConsulta> artigoConsultaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consulta")
-    private List<Receita> receitaCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idConsulta")
-    private Internamento internamentoCollection;
+    @OneToMany (mappedBy = "consulta",fetch = FetchType.LAZY)
+    private List<ArtigoConsulta> listaArtigosConsulta;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "consulta", fetch = FetchType.LAZY)
+    private Receita receita;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idConsulta", fetch = FetchType.LAZY)
+    private Internamento internamento;
     @JoinColumn(name = "ID_PACIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
-    private Paciente idPaciente;
+    private Paciente paciente;
     @JoinColumn(name = "ID_TIPO", referencedColumnName = "ID")
     @ManyToOne
-    private TipoConsulta idTipo;
+    private TipoConsulta tipoConsulta;
     
     private static EntityManager em;
     
@@ -168,55 +167,46 @@ public class Consulta implements Serializable {
 
 
     @XmlTransient
-    public List<ArtigoConsulta> getArtigoConsultaCollection() {
-        if (artigoConsultaCollection == null) {
-            artigoConsultaCollection = new ArrayList<>();
-        }
-        return artigoConsultaCollection;
+    public List<ArtigoConsulta> getListaArtigosConsulta() {
+        return listaArtigosConsulta;
     }
 
-    public void setArtigoConsultaCollection(List<ArtigoConsulta> artigoConsultaCollection) {
-        this.artigoConsultaCollection = artigoConsultaCollection;
+    public void setListaArtigosConsulta(List<ArtigoConsulta> listaArtigosConsulta) {
+        this.listaArtigosConsulta = listaArtigosConsulta;
     }
 
     @XmlTransient
-    public List<Receita> getReceitaCollection() {
-        if (receitaCollection == null) {
-            receitaCollection = new ArrayList<>();
-        }
-        return receitaCollection;
+    public Receita getReceita() {
+        return receita;
     }
 
-    public void setReceitaCollection(List<Receita> receitaCollection) {
-        this.receitaCollection = receitaCollection;
+    public void setReceita(Receita receita) {
+        this.receita = receita;
     }
 
     @XmlTransient
-    public Internamento getInternamentoCollection() {
-//        if (internamentoCollection == null) {
-//            internamentoCollection = new ArrayList<>();
-//        }
-        return internamentoCollection;
+    public Internamento getInternamento() {
+        return internamento;
     }
 
-    public void setInternamentoCollection(Internamento internamentoCollection) {
-        this.internamentoCollection = internamentoCollection;
+    public void setInternamento(Internamento internamento) {
+        this.internamento = internamento;
     }
 
-    public Paciente getIdPaciente() {
-        return idPaciente;
+    public Paciente getPaciente() {
+        return paciente;
     }
 
-    public void setIdPaciente(Paciente idPaciente) {
-        this.idPaciente = idPaciente;
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 
-    public TipoConsulta getIdTipo() {
-        return idTipo;
+    public TipoConsulta getTipoConsulta() {
+        return tipoConsulta;
     }
 
-    public void setIdTipo(TipoConsulta idTipo) {
-        this.idTipo = idTipo;
+    public void setTipoConsulta(TipoConsulta tipoConsulta) {
+        this.tipoConsulta = tipoConsulta;
     }
 
     @Override
@@ -272,16 +262,16 @@ public class Consulta implements Serializable {
         
         Consulta cnt = (Consulta) query.getSingleResult();
         this.setId(cnt.getId());
-        this.setArtigoConsultaCollection(cnt.getArtigoConsultaCollection());
+        this.setListaArtigosConsulta(cnt.getListaArtigosConsulta());
         this.setDatahora(cnt.getDatahora());
         this.setDesctratamento(cnt.getDesctratamento());
         this.setEstado(cnt.getEstado());
-        this.setIdPaciente(cnt.getIdPaciente());
-        this.setIdTipo(cnt.getIdTipo());
-        this.setInternamentoCollection(cnt.getInternamentoCollection());
+        this.setPaciente(cnt.getPaciente());
+        this.setTipoConsulta(cnt.getTipoConsulta());
+        this.setInternamento(cnt.getInternamento());
         this.setLocal(cnt.getLocal());
         this.setPago(cnt.getPago());
-        this.setReceitaCollection(cnt.getReceitaCollection());
+        this.setReceita(cnt.getReceita());
         this.setValor(cnt.getValor());
     }
 

@@ -77,7 +77,7 @@ public class ClienteTest {
         p.setSexo("Macho");
         p.setRaca("Raça");
         p.createT();        
-        cliente.getPacienteCollection().add(p);
+        cliente.getListaPacientes().add(p);
     }
     
     @After
@@ -112,7 +112,7 @@ public class ClienteTest {
         p2.setRaca("Normal");
         p2.createT();     
         
-        cliente.getPacienteCollection().add(p2);
+        cliente.getListaPacientes().add(p2);
         
         expResult.add(p);
         expResult.add(p2);
@@ -120,9 +120,9 @@ public class ClienteTest {
         Cliente cl = new Cliente();
         cl.read(cliente.getId());
         
-        assertTrue(cl.getPacienteCollection().size() == expResult.size());
+        assertTrue(cl.getListaPacientes().size() == expResult.size());
         
-        List<Paciente> lista = cl.getPacienteCollection();
+        List<Paciente> lista = cl.getListaPacientes();
         
         int position = -1;
         if (lista.get(0).equals(p)) position = 1;

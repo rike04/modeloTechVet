@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -71,16 +72,16 @@ public class Cliente implements Serializable {
     @Basic(optional = false)
     @Column(name = "NIF")
     private String nif;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
-    private List<Venda> vendaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-    private List<Paciente> pacienteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente", fetch = FetchType.LAZY)
+    private List<Venda> listaVendas;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+    private List<Paciente> listaPacientes;
     
     private static EntityManager em;
 
     public Cliente() {
-        pacienteCollection = new ArrayList<Paciente>();
-        vendaCollection = new ArrayList<Venda>();
+        listaPacientes = new ArrayList<>();
+        listaVendas = new ArrayList<>();
     }
 
     public Cliente(Integer id) {
@@ -147,21 +148,21 @@ public class Cliente implements Serializable {
     }
 
     @XmlTransient
-    public List<Venda> getVendaCollection() {
-        return vendaCollection;
+    public List<Venda> getListaVendas() {
+        return listaVendas;
     }
 
-    public void setVendaCollection(List<Venda> vendaCollection) {
-        this.vendaCollection = vendaCollection;
+    public void setListaVendas(List<Venda> listaVendas) {
+        this.listaVendas = listaVendas;
     }
 
     @XmlTransient
-    public List<Paciente> getPacienteCollection() {
-        return pacienteCollection;
+    public List<Paciente> getListaPacientes() {
+        return listaPacientes;
     }
 
-    public void setPacienteCollection(List<Paciente> pacienteCollection) {
-        this.pacienteCollection = pacienteCollection;
+    public void setListaPacientes(List<Paciente> listaPacientes) {
+        this.listaPacientes = listaPacientes;
     }
 
     @Override
@@ -236,8 +237,8 @@ public class Cliente implements Serializable {
         this.setEmail(cli.getEmail());
         this.setTelemovel(cli.getTelemovel());
         this.setNif(cli.getNif());   
-        this.setVendaCollection(cli.getVendaCollection());
-        this.setPacienteCollection(cli.getPacienteCollection());
+        this.setListaVendas(cli.getListaVendas());
+        this.setListaPacientes(cli.getListaPacientes());
         
         System.out.println("ID = " + this.getId());
     }

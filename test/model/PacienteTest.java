@@ -77,7 +77,7 @@ public class PacienteTest {
        
         List<Paciente> ps = new ArrayList<>();
         ps.add(p);
-        cliente.setPacienteCollection(ps);
+        cliente.setListaPacientes(ps);
         
     }
     
@@ -133,7 +133,7 @@ public class PacienteTest {
         Consulta c = new Consulta();
         c.setDesctratamento("Nada de tratamentos");
         c.setDatahora(new Date());
-        c.setIdPaciente(p);
+        c.setPaciente(p);
         c.setLocal("Fora");
         c.setPago((short) 0);
         c.setValor(BigDecimal.valueOf(30.0));
@@ -143,7 +143,7 @@ public class PacienteTest {
         Consulta c2 = new Consulta();
         c2.setDesctratamento("Injeção");
         c2.setDatahora(new Date());
-        c2.setIdPaciente(p);
+        c2.setPaciente(p);
         c2.setLocal("Fora");
         c2.setPago((short) 0);
         c2.setValor(BigDecimal.valueOf(30.0));
@@ -160,7 +160,7 @@ public class PacienteTest {
         Paciente pTeste = new Paciente();
         pTeste.readById(p.getId());
         
-        List<Consulta> result = pTeste.getConsultaCollection();
+        List<Consulta> result = pTeste.getListaConsultas();
         
         assertTrue(expResult.size() == result.size());
         

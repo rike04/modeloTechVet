@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author rike4
+ * @author Henrique Faria e Sergio Araujo
  */
 @Entity
 @Table(name = "INTERNAMENTO")
@@ -84,17 +84,14 @@ public class Internamento implements Serializable {
     private static EntityManager em;
 
     public Internamento() {
-        em = PersistenceManager.getEntityManager();
         
     }
 
-    public Internamento(Integer id) {
-        em = PersistenceManager.getEntityManager();        
+    public Internamento(Integer id) { 
         this.id = id;
     }
 
-    public Internamento(Integer id, Date datae, Date datas, String obs) {
-        em = PersistenceManager.getEntityManager();        
+    public Internamento(Integer id, Date datae, Date datas, String obs) {    
         this.id = id;
         this.datae = datae;
         this.datas = datas;

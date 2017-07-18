@@ -3,6 +3,7 @@ package model;
 import bll.PersistenceManager;
 import bll.Util;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -44,6 +45,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Consulta.removeById", query = "DELETE FROM Consulta c WHERE c.id = :id")
 })
 public class Consulta implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConsulta")
+    private Collection<Internamento> internamentoCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -296,6 +300,15 @@ public class Consulta implements Serializable {
         query.setParameter("id", idEliminar);
         query.executeUpdate();
         PersistenceManager.getEntityManager().getTransaction().commit();
+    }
+
+    @XmlTransient
+    public Collection<Internamento> getInternamentoCollection() {
+        return internamentoCollection;
+    }
+
+    public void setInternamentoCollection(Collection<Internamento> internamentoCollection) {
+        this.internamentoCollection = internamentoCollection;
     }
   
 }

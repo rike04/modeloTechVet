@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -80,8 +81,8 @@ public class Consulta implements Serializable {
     private List<ArtigoConsulta> artigoConsultaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "consulta")
     private List<Receita> receitaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConsulta")
-    private List<Internamento> internamentoCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "idConsulta")
+    private Internamento internamentoCollection;
     @JoinColumn(name = "ID_PACIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Paciente idPaciente;
@@ -191,14 +192,14 @@ public class Consulta implements Serializable {
     }
 
     @XmlTransient
-    public List<Internamento> getInternamentoCollection() {
-        if (internamentoCollection == null) {
-            internamentoCollection = new ArrayList<>();
-        }
+    public Internamento getInternamentoCollection() {
+//        if (internamentoCollection == null) {
+//            internamentoCollection = new ArrayList<>();
+//        }
         return internamentoCollection;
     }
 
-    public void setInternamentoCollection(List<Internamento> internamentoCollection) {
+    public void setInternamentoCollection(Internamento internamentoCollection) {
         this.internamentoCollection = internamentoCollection;
     }
 

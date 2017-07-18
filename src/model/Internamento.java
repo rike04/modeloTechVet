@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Query;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -74,7 +75,7 @@ public class Internamento implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "internamento")
     private Collection<InteRetiraProd> inteRetiraProdCollection;
     @JoinColumn(name = "ID_CONSULTA", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Consulta idConsulta;
     @JoinColumn(name = "ID_PACIENTE", referencedColumnName = "ID")
     @ManyToOne(optional = false)

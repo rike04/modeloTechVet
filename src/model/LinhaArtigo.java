@@ -55,8 +55,12 @@ public class LinhaArtigo implements Serializable {
     @Basic(optional = false)
     @Column(name = "QUANTIDADE")
     private int quantidade;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLinhaArt")
-    private List<Venda> listaVendas;
+    @Basic(optional = false)
+    @Column(name = "VALOR")
+    private double valor;
+    @JoinColumn(name = "ID_VENDA", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private Venda idVenda;
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Produto produto;
@@ -82,6 +86,23 @@ public class LinhaArtigo implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    public Venda getIdVenda() {
+        return idVenda;
+    }
+
+    public void setIdVenda(Venda idVenda) {
+        this.idVenda = idVenda;
+    }
+
 
     public int getQuantidade() {
         return quantidade;
@@ -89,15 +110,6 @@ public class LinhaArtigo implements Serializable {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
-    }
-
-    @XmlTransient
-    public List<Venda> getListaVendas() {
-        return listaVendas;
-    }
-
-    public void setListaVendas(List<Venda> listaVendas) {
-        this.listaVendas = listaVendas;
     }
 
     public Produto getProduto() {
@@ -133,7 +145,7 @@ public class LinhaArtigo implements Serializable {
         return "model.LinhaArtigo[ id=" + id + " ]";
     }
     
-        public int createT(){
+    public int createT(){
         em = PersistenceManager.getEntityManager();
         em.getTransaction().begin();
         em.persist((LinhaArtigo)this);

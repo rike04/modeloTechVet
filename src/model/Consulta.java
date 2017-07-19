@@ -74,10 +74,7 @@ public class Consulta implements Serializable {
     @Column(name = "DATAHORA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datahora; 
-    @JoinTable(name = "CON_ESCOLHE_ARTG_CON", joinColumns = {
-        @JoinColumn(name = "ID_CONSULTA", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "ID_ART_CON", referencedColumnName = "ID")})
-    @OneToMany (mappedBy = "consulta",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArtigoConsulta> listaArtigosConsulta;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "consulta", fetch = FetchType.LAZY)
     private Receita receita;

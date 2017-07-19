@@ -6,7 +6,6 @@ package model;
 
 import bll.PersistenceManager;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -53,7 +52,8 @@ public class ArtigoConsulta implements Serializable {
     @Basic(optional = false)
     @Column(name = "QUANTIDADE")
     private int quantidade;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CONSULTA", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
     private Consulta consulta;
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID")
     @ManyToOne(optional = false)
@@ -90,15 +90,6 @@ public class ArtigoConsulta implements Serializable {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
-    }
-
-    @XmlTransient
-    public Consulta getConsulta() {
-        return consulta;
-    }
-
-    public void setConsulta(Consulta consulta) {
-        this.consulta = consulta;
     }
 
     public Produto getIdProduto() {
@@ -183,5 +174,13 @@ public class ArtigoConsulta implements Serializable {
 //        query.executeUpdate();
 //        PersistenceManager.getEntityManager().getTransaction().commit();
 //    }
+
+    public Consulta getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(Consulta consulta) {
+        this.consulta = consulta;
+    }
     
 }

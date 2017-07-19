@@ -1,7 +1,6 @@
 package model;
 
 import bll.PersistenceManager;
-import bll.Util;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -16,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -29,6 +27,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+/**
+ * @author Henrique Faria e Sergio Araujo
+ */
 
 @Entity
 @Table(name = "CONSULTA")

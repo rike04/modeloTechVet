@@ -23,8 +23,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author rike4
+ * @author Henrique Faria e Sergio Araujo
  */
 @Entity
 @Table(name = "RECEITA")

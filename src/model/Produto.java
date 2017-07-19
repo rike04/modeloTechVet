@@ -29,8 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author rike4
+ * @author Henrique Faria e Sergio Araujo
  */
 @Entity
 @Table(name = "PRODUTO")

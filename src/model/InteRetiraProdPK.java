@@ -9,8 +9,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.EntityManager;
 
 /**
- *
- * @author rike4
+ * @author Henrique Faria e Sergio Araujo
  */
 @Embeddable
 public class InteRetiraProdPK implements Serializable {

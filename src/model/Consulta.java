@@ -3,7 +3,7 @@ package model;
 import bll.PersistenceManager;
 import bll.Util;
 import java.io.Serializable;
-import java.util.Collection;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -45,9 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Consulta.removeById", query = "DELETE FROM Consulta c WHERE c.id = :id")
 })
 public class Consulta implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idConsulta")
-    private Collection<Internamento> internamentoCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -279,8 +276,8 @@ public class Consulta implements Serializable {
         this.setValor(cnt.getValor());
     }
 
-    public static List<Consulta> readByData(Date data){
-        java.sql.Date dataSQL = java.sql.Date.valueOf(Util.dateToLocal(data));
+    public static List<Consulta> readByData(LocalDate data){
+        java.sql.Date dataSQL = java.sql.Date.valueOf(data);
         
         em = PersistenceManager.getEntityManager();
         Query query = em.createNamedQuery("Consulta.findByDatahora");
@@ -302,13 +299,5 @@ public class Consulta implements Serializable {
         PersistenceManager.getEntityManager().getTransaction().commit();
     }
 
-    @XmlTransient
-    public Collection<Internamento> getInternamentoCollection() {
-        return internamentoCollection;
-    }
-
-    public void setInternamentoCollection(Collection<Internamento> internamentoCollection) {
-        this.internamentoCollection = internamentoCollection;
-    }
   
 }

@@ -3,6 +3,7 @@ package model;
 import bll.PersistenceManager;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -275,9 +276,8 @@ public class Consulta implements Serializable {
         this.setValor(cnt.getValor());
     }
 
-    public static List<Consulta> readByData(LocalDate data){
-        java.sql.Date dataSQL = java.sql.Date.valueOf(data);
-        
+    public static List<Consulta> readByData(Date data){
+        java.sql.Date dataSQL = java.sql.Date.valueOf(data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         em = PersistenceManager.getEntityManager();
         Query query = em.createNamedQuery("Consulta.findByDatahora");
         query.setParameter("datahora", dataSQL);

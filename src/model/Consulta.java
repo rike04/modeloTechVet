@@ -2,7 +2,6 @@ package model;
 
 import bll.PersistenceManager;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +51,7 @@ public class Consulta implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(
-            name = "CONSULTA_SEQ",
+            name = "CONSULTA_SEQ", 
             sequenceName = "CONSULTA_SEQ",
             allocationSize = 1
     )
